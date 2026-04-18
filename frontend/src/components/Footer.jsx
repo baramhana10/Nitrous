@@ -1,62 +1,116 @@
-import { Button } from "@/components/ui/button";
-import { Zap, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Heart, Twitter, Facebook, Instagram, ShieldCheck, Truck, RefreshCw } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="relative pt-16 sm:pt-24 lg:pt-32 pb-8 overflow-hidden">
-      {/* Top gradient separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background to-card/30" />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* CTA Section */}
-        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          <div className="glass-card p-6 sm:p-8 md:p-12 lg:p-16 max-w-4xl mx-auto border-primary/20 hover:border-primary/40 transition-colors duration-500">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-3 sm:mb-4">
-              <span className="text-foreground">Ready to </span>
-              <span className="text-gradient">Ride the Future?</span>
-            </h2>
-            <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 lg:mb-8 max-w-xl mx-auto px-4">
-              Join the electric revolution. Experience silent power, zero emissions, and unlimited adventure.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="xl">
-                Configure Your ATV
-              </Button>
-              <Button variant="heroOutline" size="xl">
-                Schedule Test Ride
-              </Button>
+    <footer className="bg-background border-t border-border mt-20">
+      {/* Trust Badges Minimal */}
+      <div className="bg-card border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-border">
+            <div className="flex flex-col items-center gap-3 pt-6 md:pt-0">
+              <ShieldCheck className="w-6 h-6 text-foreground" strokeWidth={1.5} />
+              <h4 className="font-medium text-foreground">آمن للأطفال</h4>
+              <p className="text-sm text-foreground/50">ألعاب مختبرة ومضمونة</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 pt-6 md:pt-0">
+              <Truck className="w-6 h-6 text-foreground" strokeWidth={1.5} />
+              <h4 className="font-medium text-foreground">شحن سريع</h4>
+              <p className="text-sm text-foreground/50">مجاني للطلبات فوق 100$</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 pt-6 md:pt-0">
+              <RefreshCw className="w-6 h-6 text-foreground" strokeWidth={1.5} />
+              <h4 className="font-medium text-foreground">إرجاع سهل</h4>
+              <p className="text-sm text-foreground/50">خلال 30 يوماً</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
+
+
+      {/* Main Footer */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-10 mb-12">
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-neon-cyan">
-                <Zap className="w-5 h-5 text-primary-foreground" />
+          <div className="lg:col-span-1">
+            <Link to="/" className="inline-block mb-4 group">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20">
+                  <span className="text-primary font-bold text-xl">✨</span>
+                </div>
+                <span className="font-display font-bold text-xl text-foreground">متجر الألعاب</span>
               </div>
-              <span className="font-display font-bold text-2xl text-foreground">NAITROUS</span>
-            </div>
-            <p className="text-muted-foreground text-sm">
-              Pioneering the future of electric off-road vehicles.
+            </Link>
+            <p className="text-foreground/70 text-sm mb-4">
+              وجهتك العالمية للألعاب المختارة بعناية وتجربة تسوق سهلة وممتعة لكل الأعمار.
             </p>
+            <div className="flex gap-3">
+              <a
+                href="#"
+                className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
-          {/* Products */}
-          <div className="space-y-4">
-            <h4 className="font-display font-semibold text-foreground uppercase tracking-wider text-sm">
-              Products
+          {/* Shop */}
+          <div>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wide">
+              التسوق
             </h4>
             <ul className="space-y-3">
-              {["VOLT X1", "VOLT X3 PRO", "VOLT X5 APEX", "Accessories", "Apparel"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm">
-                    {item}
+              {[
+                { label: "كل الألعاب", href: "/products" },
+                { label: "ألعاب المغامرة", href: "/products?category=desert-performance" },
+                { label: "مجموعة السرعة", href: "/products?category=race-series" },
+                { label: "ركن الأطفال", href: "/products?category=youth-series" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    to={item.href}
+                    className="text-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wide">
+              الدعم
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { label: "تواصل معنا", href: "#" },
+                { label: "الأسئلة الشائعة", href: "#" },
+                { label: "الشحن", href: "#" },
+                { label: "الإرجاع", href: "#" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    className="text-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -64,15 +118,23 @@ const Footer = () => {
           </div>
 
           {/* Company */}
-          <div className="space-y-4">
-            <h4 className="font-display font-semibold text-foreground uppercase tracking-wider text-sm">
-              Company
+          <div>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wide">
+              الشركة
             </h4>
             <ul className="space-y-3">
-              {["About Us", "Careers", "Press", "Blog", "Investors"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm">
-                    {item}
+              {[
+                { label: "من نحن", href: "#" },
+                { label: "الوظائف", href: "#" },
+                { label: "المدونة", href: "#" },
+                { label: "الصحافة", href: "#" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    className="text-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -80,50 +142,75 @@ const Footer = () => {
           </div>
 
           {/* Contact */}
-          <div className="space-y-4">
-            <h4 className="font-display font-semibold text-foreground uppercase tracking-wider text-sm">
-              Contact
+          <div>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wide">
+              التواصل
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-muted-foreground text-sm">
-                <Mail className="w-4 h-4 text-primary" />
-                hello@naitrous.com
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs text-foreground/60 font-semibold">البريد الإلكتروني</p>
+                  <a
+                    href="mailto:support@toystore.com"
+                    className="text-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    support@toystore.com
+                  </a>
+                </div>
               </li>
-              <li className="flex items-center gap-3 text-muted-foreground text-sm">
-                <Phone className="w-4 h-4 text-primary" />
-                1-800-NAITROUS
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs text-foreground/60 font-semibold">الهاتف</p>
+                  <a
+                    href="tel:+18005555555"
+                    className="text-foreground/70 hover:text-primary transition-colors text-sm"
+                  >
+                    1-800-555-5555
+                  </a>
+                </div>
               </li>
-              <li className="flex items-center gap-3 text-muted-foreground text-sm">
-                <MapPin className="w-4 h-4 text-primary" />
-                San Francisco, CA
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs text-foreground/60 font-semibold">العنوان</p>
+                  <p className="text-foreground/70 text-sm">
+                    123 Toy Lane<br />
+                    مدينة المرح، FC 12345
+                  </p>
+                </div>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-border/30">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-muted-foreground text-sm">
-              © 2050 Naitrous Electric Vehicles. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              {["Privacy", "Terms", "Cookies"].map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
+        {/* Divider */}
+        <div className="border-t border-border my-8" />
+
+        {/* Bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-foreground/70 text-sm text-center md:text-left">
+            © {currentYear} متجر الألعاب. جميع الحقوق محفوظة. صُنع بحب{" "}
+            <Heart className="inline w-4 h-4 text-primary" /> لعشاق الألعاب حول العالم.
+          </p>
+          <div className="flex flex-wrap gap-6 justify-center">
+            {[
+              { label: "سياسة الخصوصية", href: "#" },
+              { label: "شروط الخدمة", href: "#" },
+              { label: "سياسة ملفات الارتباط", href: "#" },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="text-foreground/70 hover:text-primary transition-colors text-sm"
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
-
-      {/* Bottom glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
     </footer>
   );
 };

@@ -1,23 +1,22 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import AtvCategories from "@/components/atv-categories";
-import FeaturesSection from "@/components/FeaturesSection";
+import StatsTicker from "@/components/StatsTicker";
+import CategoriesSection from "@/components/atv-categories"; // Contains the Mhana categories
 import ProductsSection from "@/components/ProductsSection";
-import TechnologySection from "@/components/TechnologySection";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import HomeStorySection from "@/components/HomeStorySection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
     return (
-        <div className="min-h-screen">
+        <div className="relative min-h-screen bg-background">
             <Navbar />
             <HeroSection />
-            <AtvCategories />
-
+            <StatsTicker />
+            <CategoriesSection />
             <ProductsSection />
-            {/* <TechnologySection />
-            <TestimonialsSection /> */}
             <FeaturesSection />
+            <HomeStorySection />
             <Footer />
         </div>
     );

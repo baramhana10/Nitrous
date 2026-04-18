@@ -1,401 +1,330 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const categories = [
-  {
-    id: "desert-performance",
-    name: "DESERT PERFORMANCE",
-    image: "/nitrousC1.png",
-    tagline: "Conquer the Dunes",
-    description: "Built for sand, engineered for speed",
-  },
-  {
-    id: "race-series",
-    name: "RACE SERIES",
-    image: "/nitrousC2.png",
-    tagline: "Track Domination",
-    description: "Professional racing technology",
-  },
-  {
-    id: "sport-elite",
-    name: "SPORT ELITE",
-    image: "/nitrousC3.png",
-    tagline: "Maximum Speed",
-    description: "Pure adrenaline, zero compromise",
-  },
-  {
-    id: "youth-series",
-    name: "YOUTH SERIES",
-    image: "/nitrousC4.png",
-    tagline: "Future Champions",
-    description: "Safe power for the next generation",
-  },
-  {
-    id: "adventure-pro",
-    name: "ADVENTURE PRO",
-    image: "/nitrousC5.png",
-    tagline: "Extreme Terrain",
-    description: "Unstoppable in any condition",
-  },
-  {
-    id: "collection",
-    name: "FULL COLLECTION",
-    image: "/nitrousC6.png",
-    tagline: "Complete Lineup",
-    description: "Explore every model, every spec",
-  },
-]
+const CATEGORIES = [
+  { id: "edu",         name: "ألعاب تعليمية",    emoji: "📚", color: "#3b82f6", ageRange: "2 – 10 سنوات",  description: "تنمّي عقل طفلك وتجعل التعلّم ممتعاً" },
+  { id: "dolls",       name: "دمى وعرائس",        emoji: "🧸", color: "#ec4899", ageRange: "1 – 8 سنوات",   description: "أصدقاء صغار يرافقون طفلك في كل مغامرة" },
+  { id: "cars",        name: "سيارات وطائرات",    emoji: "🚗", color: "#f59e0b", ageRange: "3 – 12 سنة",   description: "سرعة وإثارة ومغامرة لا تنتهي" },
+  { id: "electronics", name: "ألعاب إلكترونية",  emoji: "🎮", color: "#8b5cf6", ageRange: "5 – 15 سنة",   description: "تقنية حديثة تجعل وقت اللعب لا يُنسى" },
+  { id: "building",    name: "ألعاب البناء",      emoji: "🧱", color: "#10b981", ageRange: "3 – 12 سنة",   description: "طوّر التفكير الهندسي والإبداعي" },
+  { id: "outdoor",     name: "ألعاب خارجية",      emoji: "⚽", color: "#06b6d4", ageRange: "3 – 14 سنة",   description: "نشاط وصحة في الهواء الطلق" },
+  { id: "arts",        name: "فنون وإبداع",       emoji: "🎨", color: "#f43f5e", ageRange: "3 – 12 سنة",   description: "أطلق العنان لخيال طفلك الواسع" },
+  { id: "babies",      name: "مستلزمات الرضع",   emoji: "🍼", color: "#a78bfa", ageRange: "0 – 2 سنوات",  description: "عناية وأمان لأصغر أفراد العائلة" },
+];
 
-export default function ATVCategories() {
-  const navigate = useNavigate();
-  const [hoveredId, setHoveredId] = useState(null)
-  const [selectedId, setSelectedId] = useState(null)
+const FALLBACK = {
+  edu:         [{ emoji: "📖", name: "مجموعة التعلم المتكامل", price: "149" }, { emoji: "🔢", name: "لعبة الأرقام الذكية", price: "89" }, { emoji: "🔤", name: "تعلّم الحروف", price: "65" }],
+  dolls:       [{ emoji: "🧸", name: "دمية الدبدوب الناعم",   price: "99" }, { emoji: "👸", name: "عروسة الأميرة",        price: "129" }, { emoji: "🦁", name: "أسد الغابة المحشو",  price: "79" }],
+  cars:        [{ emoji: "🏎️", name: "سيارة السباق RC",       price: "299" }, { emoji: "✈️", name: "طائرة المراقبة",      price: "399" }, { emoji: "🚂", name: "قطار الأطفال",       price: "189" }],
+  electronics: [{ emoji: "🤖", name: "روبوت البرمجة الذكي",  price: "549" }, { emoji: "🎯", name: "لعبة الواقع المعزز",  price: "329" }, { emoji: "🕹️", name: "وحدة التحكم",        price: "459" }],
+  building:    [{ emoji: "🧩", name: "طقم البناء الذكي",      price: "219" }, { emoji: "🏡", name: "مكعبات البناء",       price: "149" }, { emoji: "🔧", name: "حقيبة المهندس",      price: "89"  }],
+  outdoor:     [{ emoji: "⚽", name: "كرة القدم الاحترافية",  price: "119" }, { emoji: "🛴", name: "سكوتر الأطفال",       price: "349" }, { emoji: "🏊", name: "مسبح الأطفال",       price: "199" }],
+  arts:        [{ emoji: "🎨", name: "طقم الرسم الفني",       price: "139" }, { emoji: "🖌️", name: "ألوان الأكواريل",     price: "79"  }, { emoji: "✂️", name: "حقيبة الأشغال",     price: "95"  }],
+  babies:      [{ emoji: "🍼", name: "مجموعة الحسية للرضع",  price: "189" }, { emoji: "🎵", name: "خشخيشة موسيقية",      price: "49"  }, { emoji: "🧸", name: "بطانية اللعب",       price: "129" }],
+};
 
-  return (
-    <section className="relative min-h-screen bg-black overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(220,38,38,0.15),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.8),transparent_50%)]" />
-        {/* Disable heavy blur animations on mobile */}
-        <div className="hidden md:block absolute top-0 left-1/4 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="hidden md:block absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-[120px] animate-pulse-slow animation-delay-2000" />
-        <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/5 rounded-full blur-[150px] animate-spin-slow" />
-      </div>
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      <div className="absolute inset-0 opacity-[0.02] md:opacity-[0.03]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 50px,
-            rgba(220, 38, 38, 0.5) 50px,
-            rgba(220, 38, 38, 0.5) 51px
-          )`,
-          }}
-        />
-      </div>
+export default function CategoriesSection() {
+  const [activeId, setActiveId]           = useState("electronics");
+  const [products, setProducts]           = useState([]);
+  const [loading, setLoading]             = useState(false);
+  const [animating, setAnimating]         = useState(false);
 
-      <div className="relative max-w-[1800px] mx-auto px-3 sm:px-4 py-8 sm:py-12 md:py-20">
-        <div className="mb-8 sm:mb-12 md:mb-20">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="h-[3px] w-12 bg-gradient-to-r from-red-600 to-transparent" />
-            <div className="h-[2px] w-24 bg-gradient-to-r from-red-500/50 to-transparent" />
-            <div className="h-[1px] w-32 bg-gradient-to-r from-red-400/30 to-transparent" />
-          </div>
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${API_URL}/api/products`)
+      .then(r => r.json())
+      .then(d => setProducts(Array.isArray(d) ? d : []))
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, []);
 
-          <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white leading-[0.85] tracking-tighter mb-3 sm:mb-4">
-            <span className="inline-block">SELECT</span>
-            <br />
-            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-500 to-red-600 animate-gradient">
-              YOUR CLASS
-            </span>
-          </h1>
-
-          <div className="flex items-center gap-2 sm:gap-3 text-gray-500 text-xs sm:text-sm md:text-base font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] mt-4 sm:mt-6">
-            <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
-            <span>Six Categories</span>
-            <div className="h-[1px] w-8 bg-red-600/30" />
-            <span>Pure Performance</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-12 gap-4 md:gap-6">
-          <div className="col-span-12 md:col-span-8 lg:col-span-7">
-            <CategoryCard
-              category={categories[0]}
-              isHovered={hoveredId === categories[0].id}
-              isSelected={selectedId === categories[0].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="large"
-            />
-          </div>
-
-          <div className="col-span-12 md:col-span-4 lg:col-span-5 md:row-span-2">
-            <CategoryCard
-              category={categories[1]}
-              isHovered={hoveredId === categories[1].id}
-              isSelected={selectedId === categories[1].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="tall"
-            />
-          </div>
-
-          <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-            <CategoryCard
-              category={categories[2]}
-              isHovered={hoveredId === categories[2].id}
-              isSelected={selectedId === categories[2].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="medium"
-            />
-          </div>
-
-          <div className="col-span-12 sm:col-span-6 lg:col-span-3">
-            <CategoryCard
-              category={categories[3]}
-              isHovered={hoveredId === categories[3].id}
-              isSelected={selectedId === categories[3].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="small"
-            />
-          </div>
-
-          <div className="col-span-12 lg:col-span-7">
-            <CategoryCard
-              category={categories[4]}
-              isHovered={hoveredId === categories[4].id}
-              isSelected={selectedId === categories[4].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="wide"
-            />
-          </div>
-
-          <div className="col-span-12 lg:col-span-5">
-            <CategoryCard
-              category={categories[5]}
-              isHovered={hoveredId === categories[5].id}
-              isSelected={selectedId === categories[5].id}
-              onHover={setHoveredId}
-              onSelect={setSelectedId}
-              variant="feature"
-            />
-          </div>
-        </div>
-      </div>
-
-      <style jsx>{`
-        @media (min-width: 768px) {
-          @keyframes gradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-          }
-          
-          @keyframes pulse-slow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-          }
-          
-          @keyframes spin-slow {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-          }
-          
-          .animate-gradient {
-            background-size: 200% auto;
-            animation: gradient 4s ease infinite;
-          }
-          
-          .animate-pulse-slow {
-            animation: pulse-slow 4s ease-in-out infinite;
-          }
-          
-          .animate-spin-slow {
-            animation: spin-slow 30s linear infinite;
-          }
-          
-          .animation-delay-2000 {
-            animation-delay: 2s;
-          }
-        }
-      `}</style>
-    </section>
-  )
-}
-
-function CategoryCard({ category, isHovered, isSelected, onHover, onSelect, variant = "medium" }) {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    if (category.id === "collection") {
-      navigate('/products');
-    } else {
-      navigate(`/products?category=${category.id}`);
-    }
+  const switchTo = (id) => {
+    if (id === activeId) return;
+    setAnimating(true);
+    setTimeout(() => { setActiveId(id); setAnimating(false); }, 180);
   };
 
-  const heightClasses = {
-    large: "h-[500px] md:h-[650px]",
-    tall: "h-[500px] md:h-[850px]",
-    medium: "h-[400px] md:h-[500px]",
-    small: "h-[400px] md:h-[440px]",
-    wide: "h-[350px] md:h-[450px]",
-    feature: "h-[400px] md:h-[450px]",
-  }
+  const active       = CATEGORIES.find(c => c.id === activeId);
+  const realProducts = products.filter(p => p.category === activeId).slice(0, 3);
+  const displayItems = realProducts.length > 0 ? realProducts : (FALLBACK[activeId] || []);
+  const isReal       = realProducts.length > 0;
+  const totalReal    = products.filter(p => p.category === activeId).length;
 
   return (
-    <div
-      className={`group relative ${heightClasses[variant]} cursor-pointer`}
-      onMouseEnter={() => onHover(category.id)}
-      onMouseLeave={() => onHover(null)}
-      onClick={handleClick}
-    >
-      {/* Simplified glow - no blur on mobile */}
-      <div
-        className={`absolute -inset-1 bg-gradient-to-br from-red-600 via-red-500 to-transparent rounded-3xl transition-opacity duration-300 md:duration-500 ${isHovered || isSelected ? "opacity-100 md:blur-xl md:scale-105" : "opacity-0"
-          }`}
-      />
+    <section className="py-16 md:py-24 bg-background border-b border-white/5 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
 
-      <div className="relative h-full bg-zinc-950 rounded-3xl overflow-hidden border border-zinc-900/50 transition-all duration-300 md:duration-500">
-        <div className="relative h-full overflow-hidden">
-          {/* Disable scale animation on mobile */}
-          <div
-            className={`absolute inset-0 transition-transform duration-0 md:duration-500 ${isHovered ? "md:scale-110" : "scale-100"}`}
-          >
-            <img
-              src={category.image || "/placeholder.svg"}
-              alt={category.name}
-              className={`w-full h-full object-cover transition-none md:transition-all md:duration-500 ${isHovered ? "md:brightness-110 md:contrast-110" : "brightness-90 contrast-100"
-                }`}
-            />
-          </div>
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
-          {/* Disable heavy blend modes on mobile */}
-          <div
-            className={`hidden md:block absolute inset-0 bg-gradient-to-br from-red-600/40 via-red-500/20 to-transparent mix-blend-multiply transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
-              }`}
-          />
-          <div
-            className={`hidden md:block absolute inset-0 bg-gradient-to-tr from-transparent via-red-500/10 to-red-600/30 mix-blend-screen transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
-              }`}
-          />
-
-          <div
-            className={`absolute inset-0 transition-opacity duration-500 ${isHovered ? "opacity-100" : "opacity-0"}`}
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(220, 38, 38, 0.03) 2px, rgba(220, 38, 38, 0.03) 4px)",
-            }}
-          />
-
-          <div
-            className={`absolute top-0 right-0 w-full h-full transition-all duration-700 ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
-              }`}
-            style={{
-              background: "linear-gradient(135deg, transparent 30%, rgba(220, 38, 38, 0.1) 50%, transparent 70%)",
-            }}
-          />
-
-          <div
-            className={`absolute top-0 left-0 transition-all duration-500 ${isHovered ? "w-24 h-24 opacity-100" : "w-12 h-12 opacity-0"
-              }`}
-          >
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-red-600 to-transparent" />
-            <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-red-600 to-transparent" />
-          </div>
-          <div
-            className={`absolute bottom-0 right-0 transition-all duration-500 ${isHovered ? "w-24 h-24 opacity-100" : "w-12 h-12 opacity-0"
-              }`}
-          >
-            <div className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-l from-red-600 to-transparent" />
-            <div className="absolute bottom-0 right-0 w-[2px] h-full bg-gradient-to-t from-red-600 to-transparent" />
-          </div>
-        </div>
-
-        <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8">
-          <div className="flex justify-between items-start">
-            <div
-              className={`transition-all duration-500 ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-                }`}
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black/70 backdrop-blur-md rounded-full border border-red-600/30">
-                <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse" />
-                <span className="text-xs font-bold tracking-widest text-red-500 uppercase">{category.tagline}</span>
-              </div>
-            </div>
-
-            <div
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${isHovered ? "border-red-600 bg-red-600/20 scale-110" : "border-white/20 bg-white/5 scale-100"
-                }`}
-            >
-              <svg
-                className={`w-5 h-5 transition-all duration-500 ${isHovered ? "text-red-500 rotate-0" : "text-white/50 -rotate-45"
-                  }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
-
+        {/* ── Section Header ── */}
+        <div className="flex items-end justify-between mb-10">
           <div>
-            <h3
-              className={`text-3xl md:text-5xl font-black text-white leading-none tracking-tighter mb-3 transition-all duration-500 ${isHovered ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-90"
-                }`}
-            >
-              {category.name}
-            </h3>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-6 h-px bg-primary block" />
+              <span className="text-primary text-xs font-bold tracking-widest uppercase">الأقسام</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black text-white">تسوق حسب الفئة</h2>
+          </div>
+          <Link to="/products" className="hidden md:flex items-center gap-2 text-white/40 hover:text-white text-sm font-semibold transition-colors">
+            كل المنتجات <ArrowLeft className="w-4 h-4" />
+          </Link>
+        </div>
 
-            <p
-              className={`text-gray-400 text-sm md:text-base font-light mb-4 transition-all duration-500 delay-75 ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-                }`}
-            >
-              {category.description}
-            </p>
+        {/* ══════════════════════════════════════
+            MOBILE: vertical card list + side panel
+        ══════════════════════════════════════ */}
+        <div className="md:hidden">
+          {/* Category cards — 2 col visual grid */}
+          <div className="grid grid-cols-4 gap-2 mb-6">
+            {CATEGORIES.map(cat => {
+              const isActive = activeId === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => switchTo(cat.id)}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-2xl border transition-all duration-200 active:scale-95"
+                  style={{
+                    background: isActive ? `${cat.color}22` : "rgba(255,255,255,0.03)",
+                    borderColor: isActive ? `${cat.color}66` : "rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <span className="text-xl leading-none">{cat.emoji}</span>
+                  <span className="text-[9px] font-bold leading-tight text-center px-0.5"
+                    style={{ color: isActive ? cat.color : "rgba(255,255,255,0.45)" }}>
+                    {cat.name.split(" ")[0]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-            <div className="relative h-1 bg-white/10 rounded-full overflow-hidden mb-4">
-              <div
-                className={`absolute inset-y-0 left-0 bg-gradient-to-r from-red-600 to-red-500 transition-all duration-1000 ease-out ${isHovered ? "w-full" : "w-0"
-                  }`}
-              />
+          {/* Active category detail card */}
+          <div
+            className="rounded-3xl border overflow-hidden transition-all duration-200"
+            style={{
+              borderColor: `${active?.color}33`,
+              background: `linear-gradient(135deg, ${active?.color}0d 0%, rgba(14,17,24,1) 60%)`,
+              opacity: animating ? 0 : 1,
+              transform: animating ? "translateY(8px)" : "translateY(0)",
+            }}
+          >
+            {/* Top: emoji + info */}
+            <div className="flex items-center gap-4 p-5">
+              <div className="relative w-16 h-16 shrink-0">
+                <div className="absolute inset-0 rounded-2xl blur-lg opacity-60"
+                  style={{ background: active?.color }} />
+                <div className="relative w-full h-full rounded-2xl flex items-center justify-center text-3xl"
+                  style={{ background: `${active?.color}22`, border: `1px solid ${active?.color}44` }}>
+                  {active?.emoji}
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-black text-base mb-0.5">{active?.name}</p>
+                <p className="text-white/40 text-xs mb-2">{active?.description}</p>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                  style={{ background: `${active?.color}22`, color: active?.color }}>
+                  العمر: {active?.ageRange}
+                </span>
+              </div>
             </div>
 
-            <div
-              className={`flex items-center gap-3 text-sm font-bold transition-all duration-500 delay-100 ${isHovered ? "text-red-500 opacity-100 translate-x-0" : "text-white/60 opacity-0 -translate-x-4"
-                }`}
-            >
-              <span className="tracking-widest uppercase">Explore Range</span>
-              <div className="flex gap-1">
-                <div
-                  className={`w-8 h-[2px] bg-current transition-all duration-300 ${isHovered ? "translate-x-0" : "-translate-x-2"}`}
-                />
-                <div
-                  className={`w-2 h-2 border-t-2 border-r-2 border-current rotate-45 transition-all duration-300 ${isHovered ? "translate-x-0" : "-translate-x-2"}`}
-                />
+            {/* Divider */}
+            <div className="h-px mx-5" style={{ background: `${active?.color}22` }} />
+
+            {/* Products mini list */}
+            <div className="p-4 space-y-2.5">
+              {loading
+                ? [...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-3 p-2">
+                      <div className="w-11 h-11 rounded-xl bg-white/5 animate-pulse shrink-0" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-2.5 bg-white/5 rounded animate-pulse w-3/4" />
+                        <div className="h-2 bg-white/5 rounded animate-pulse w-1/3" />
+                      </div>
+                    </div>
+                  ))
+                : displayItems.map((item, idx) => {
+                    if (isReal) {
+                      const imgSrc = (item.images?.[0] || "").startsWith("/uploads") ? `${API_URL}${item.images[0]}` : item.images?.[0] || "";
+                      return (
+                        <Link key={item._id} to={`/product/${item._id}`}
+                          className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-white/5 transition-colors">
+                          <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 border"
+                            style={{ borderColor: `${active?.color}33` }}>
+                            {imgSrc ? <img src={imgSrc} className="w-full h-full object-cover" alt="" /> : <span className="flex items-center justify-center w-full h-full text-lg">{active?.emoji}</span>}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-xs font-bold truncate">{item.name}</p>
+                            <p className="text-xs font-black mt-0.5" style={{ color: active?.color }}>{item.price} ر.س</p>
+                          </div>
+                        </Link>
+                      );
+                    }
+                    return (
+                      <div key={idx} className="flex items-center gap-3 p-2.5 rounded-2xl">
+                        <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
+                          style={{ background: `${active?.color}15`, border: `1px solid ${active?.color}33` }}>
+                          {item.emoji}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-white text-xs font-bold">{item.name}</p>
+                          <p className="text-xs font-black mt-0.5" style={{ color: active?.color }}>{item.price} ر.س</p>
+                        </div>
+                      </div>
+                    );
+                  })
+              }
+            </div>
+
+            {/* Shop button */}
+            <div className="px-4 pb-4">
+              <Link to={`/products?category=${activeId}`}
+                className="flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm text-white transition-all"
+                style={{ background: active?.color }}>
+                تسوق {active?.name}
+                <ArrowLeft className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════
+            DESKTOP: side pill list + showcase
+        ══════════════════════════════════════ */}
+        <div className="hidden md:flex gap-6">
+
+          {/* Left: vertical category list */}
+          <div className="w-64 shrink-0 flex flex-col gap-1.5">
+            {CATEGORIES.map(cat => {
+              const isActive = activeId === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => switchTo(cat.id)}
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-2xl text-right transition-all duration-200 group relative overflow-hidden"
+                  style={{
+                    background: isActive ? `${cat.color}18` : "transparent",
+                    border: isActive ? `1px solid ${cat.color}44` : "1px solid transparent",
+                  }}
+                >
+                  {/* Active left bar */}
+                  {isActive && (
+                    <span className="absolute right-0 top-3 bottom-3 w-0.5 rounded-full"
+                      style={{ background: cat.color }} />
+                  )}
+                  <span className="text-2xl leading-none">{cat.emoji}</span>
+                  <span className="text-sm font-bold transition-colors"
+                    style={{ color: isActive ? cat.color : "rgba(255,255,255,0.5)" }}>
+                    {cat.name}
+                  </span>
+                  {isActive && (
+                    <ArrowRight className="w-4 h-4 mr-auto shrink-0" style={{ color: cat.color }} />
+                  )}
+                </button>
+              );
+            })}
+            <Link to="/products"
+              className="mt-2 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl border border-white/8 text-white/30 hover:text-white text-xs font-semibold transition-colors">
+              كل الأقسام <ArrowLeft className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* Right: showcase panel */}
+          <div
+            className="flex-1 rounded-3xl border overflow-hidden flex transition-all duration-200"
+            style={{
+              borderColor: `${active?.color}25`,
+              background: `linear-gradient(135deg, ${active?.color}0c 0%, #0e1118 50%)`,
+              opacity: animating ? 0 : 1,
+              transform: animating ? "translateY(10px)" : "translateY(0)",
+            }}
+          >
+            {/* Center: visual */}
+            <div className="flex-1 flex flex-col items-center justify-center p-10 text-center">
+              {/* Glow bg */}
+              <div className="relative w-44 h-44 mb-6">
+                <div className="absolute inset-0 rounded-full blur-3xl opacity-40"
+                  style={{ background: active?.color }} />
+                <div className="relative w-full h-full flex items-center justify-center text-[90px] select-none">{active?.emoji}</div>
+              </div>
+              <span className="text-xs font-bold px-3 py-1 rounded-full mb-3"
+                style={{ background: `${active?.color}20`, color: active?.color }}>
+                العمر: {active?.ageRange}
+              </span>
+              <h3 className="text-4xl font-black text-white mb-3">{active?.name}</h3>
+              <p className="text-white/50 text-sm max-w-xs mb-8">{active?.description}</p>
+              <Link to={`/products?category=${activeId}`}>
+                <button
+                  className="flex items-center gap-2 px-8 py-3.5 rounded-full font-black text-white text-sm transition-all hover:scale-105"
+                  style={{ background: active?.color, boxShadow: `0 8px 30px ${active?.color}44` }}>
+                  تسوق الآن
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+              </Link>
+            </div>
+
+            {/* Right panel: product list */}
+            <div className="w-[340px] shrink-0 border-r border-white/5 bg-black/20 flex flex-col">
+              <div className="px-6 py-5 border-b border-white/5">
+                <p className="text-xs font-bold text-white/40 uppercase tracking-widest">منتجات مميزة</p>
+              </div>
+              <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                {loading
+                  ? [...Array(3)].map((_, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3">
+                        <div className="w-14 h-14 rounded-xl bg-white/5 animate-pulse shrink-0" />
+                        <div className="flex-1 space-y-2">
+                          <div className="h-3 bg-white/5 rounded animate-pulse w-3/4" />
+                          <div className="h-2.5 bg-white/5 rounded animate-pulse w-1/3" />
+                        </div>
+                      </div>
+                    ))
+                  : displayItems.map((item, idx) => {
+                      if (isReal) {
+                        const imgSrc = (item.images?.[0] || "").startsWith("/uploads") ? `${API_URL}${item.images[0]}` : item.images?.[0] || "";
+                        return (
+                          <Link key={item._id} to={`/product/${item._id}`}
+                            className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/8 transition-all group">
+                            <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border"
+                              style={{ borderColor: `${active?.color}33` }}>
+                              {imgSrc ? <img src={imgSrc} className="w-full h-full object-cover" alt="" /> : <span className="flex items-center justify-center w-full h-full text-2xl">{active?.emoji}</span>}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-white text-sm font-bold truncate mb-1">{item.name}</p>
+                              <p className="text-sm font-black" style={{ color: active?.color }}>{item.price} ر.س</p>
+                            </div>
+                          </Link>
+                        );
+                      }
+                      return (
+                        <div key={idx} className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/8 transition-all cursor-pointer">
+                          <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                            style={{ background: `${active?.color}15`, border: `1px solid ${active?.color}33` }}>
+                            {item.emoji}
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-white text-sm font-bold mb-1">{item.name}</p>
+                            <p className="text-sm font-black" style={{ color: active?.color }}>{item.price} ر.س</p>
+                          </div>
+                        </div>
+                      );
+                    })
+                }
+              </div>
+              <div className="p-4 border-t border-white/5">
+                <Link to={`/products?category=${activeId}`}
+                  className="flex items-center justify-center gap-2 py-2.5 text-xs font-bold transition-colors"
+                  style={{ color: active?.color }}>
+                  عرض جميع منتجات {active?.name}
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        {isSelected && (
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-red-600/20 animate-glitch-1" />
-            <div className="absolute inset-0 bg-red-600/20 animate-glitch-2" />
-          </div>
-        )}
       </div>
-
-      <style jsx>{`
-        @keyframes glitch-1 {
-          0%, 100% { transform: translateX(0); opacity: 0.8; }
-          25% { transform: translateX(-2px); opacity: 1; }
-          50% { transform: translateX(2px); opacity: 0.8; }
-          75% { transform: translateX(-1px); opacity: 1; }
-        }
-        
-        @keyframes glitch-2 {
-          0%, 100% { transform: translateY(0); opacity: 0.6; }
-          33% { transform: translateY(-1px); opacity: 0.8; }
-          66% { transform: translateY(1px); opacity: 0.6; }
-        }
-        
-        .animate-glitch-1 {
-          animation: glitch-1 0.3s infinite;
-        }
-        
-        .animate-glitch-2 {
-          animation: glitch-2 0.4s infinite;
-        }
-      `}</style>
-    </div>
-  )
+    </section>
+  );
 }

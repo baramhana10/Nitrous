@@ -1,0 +1,50 @@
+[
+  {
+    "specs": {
+      "range": "388mi",
+      "power": "150 KW",
+      "acceleration": "0-60 5s",
+      "topSpeed": "120"
+    },
+    "_id": "697b75e10c89143ebee9d1cf",
+    "name": "nitrous",
+    "tagline": "test",
+    "price": "22,400",
+    "category": "desert-performance",
+    "categoryName": "Desert Performance",
+    "image": "/uploads/1769698785039-ÙÙØ·Ø© Ø´Ø§Ø´Ø© 2024-07-18 130429.png",
+    "features": [
+      "test"
+    ],
+    "badge": "new",
+    "rating": 0,
+    "reviews": 0,
+    "createdAt": "2026-01-29T14:59:45.059Z",
+    "updatedAt": "2026-01-29T14:59:45.059Z",
+    "__v": 0
+  },
+  {
+    "specs": {
+      "range": "388mi",
+      "power": "150 KW",
+      "acceleration": "0-60 5s",
+      "topSpeed": "120"
+    },
+    "_id": "697b7aed0c89143ebee9d1de",
+    "name": "test",
+    "tagline": "test",
+    "price": "1111111",
+    "category": "race-series",
+    "categoryName": "Race Series",
+    "image": "/uploads/1769700077774-ÙÙØ·Ø© Ø´Ø§Ø´Ø© 2024-07-18 130725.png",
+    "features": [
+      "rwar"
+    ],
+    "badge": "new",
+    "rating": 0,
+    "reviews": 0,
+    "createdAt": "2026-01-29T15:21:17.787Z",
+    "updatedAt": "2026-01-29T15:21:17.787Z",
+    "__v": 0
+  }
+]
